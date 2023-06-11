@@ -19,18 +19,11 @@
   <h1>
     <div>
       <div style="display: inline-block;">
-        <form method ="GET"> 
-             <p>
-                 <label for="userName">用户名:</label>
-                <input type="text" name="account" placeholder="请输入用户名">
-                <label for="passWord">密&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
-                <input type="text" name="password" placeholder="请输入密码">
-             </p>
-             <p>
-
-             </p>
-             <input type="submit" >
-        </form>
+        <form action="http://127.0.0.1:3000/login" method="GET">
+          <!--设置元素名字-->
+          帐号: <input type="text" name="account"> 
+          密码: <input type="text" name="password">
+          <input type="submit" value="Submit">
         <a href="register.html">注册</a>
         
       </div>

@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const mysql = require("mysql")
-const conn = mysql.createConnection({
+const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "root",
@@ -65,22 +65,27 @@ app.get('/process_get', function (req, res) {
   var response = {
     "account": req.query.account,
     "password": req.query.password,
-    "name": req.query.name
   };
+  var selectSQL = "select account,password from user where account = '" + req.query.account + "'";
+  if(selectSQL==''){
+    var addSql = 'INSERT INTO user(account,password) VALUES(?,?)';
+    //获取用户输入的数据
+    var addSqlParams = [req.query.account, req.query.password];
+    connection.query(addSql, addSqlParams, function (err, result) {
+      //如果插入数据失败，则注册失败，否则注册成功
+      if (err) {
+        console.log('[INSERT ERROR] - ', err.message);
+        res.end("fail");
+        //如果失败就直接return不会执行下面的代码
+        return;
+      }
+      res.end("success");
+      console.log("注册成功");
+    });
+  }else{
+    console.log("账号已存在")
+  }
   //创建增加数据的sql语句实现注册功能
-  var addSql = 'INSERT INTO user(account,password,name) VALUES(?,?,?)';
-  //获取用户输入的数据
-  var addSqlParams = [req.query.account, req.query.password, req.query.name];
-  connection.query(addSql, addSqlParams, function (err, result) {
-    //如果插入数据失败，则注册失败，否则注册成功
-    if (err) {
-      console.log('[INSERT ERROR] - ', err.message);
-      res.end("fail");
-      //如果失败就直接return不会执行下面的代码
-      return;
-    }
-    res.end("success");
-    console.log("注册成功");
-  });
+
   console.log(response);
 })
