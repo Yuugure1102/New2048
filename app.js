@@ -1,11 +1,14 @@
 const express = require("express");
 const app = express();
+
+var router = express.Router();
+
 const mysql = require("mysql")
+
 const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "root",
-  //此处是你添加的数据库名
   database: "my_sql",
   multipleStatements: true,
 })
@@ -17,7 +20,7 @@ app.listen(3000, () => {
 app.use(express.static(__dirname));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(__dirname + "/index.ejs");
 });
 
 app.all("*", function (req, res, next) {
@@ -89,3 +92,16 @@ app.get('/process_get', function (req, res) {
 
   console.log(response);
 })
+// res.render('/index', {json:'json数据'});
+
+app.get('/getUser', (req, res) => {
+  connection.query('select * from user', (err, data, field) => {
+    if (!err) {
+      //返回查询数据
+      res.send(data)
+    }
+  })
+})
+
+
+module.exports = router;

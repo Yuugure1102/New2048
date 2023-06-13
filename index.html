@@ -3,37 +3,57 @@
 
 <head>
   <meta charset="utf-8" />
-  
+
   <meta name="viewport"
     content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>2048</title>
   <!-- <link th:href="@{2048.css}" rel="stylesheet"> -->
-  <link href="./2048.css"  rel="stylesheet">
+  <!-- <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"> -->
+
+  <link href="./2048.css" rel="stylesheet">
   <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
   <script src="./support2048.js"></script>
   <script src="./showanimation2018.js"></script>
   <script src="./main2048.js"></script>
+
 </head>
 
 <body>
+  <div>
+    <p style="text-align: center">学生信息表</p>
+    <table width="100%" id="record2">
+        <tr class="cardLayout">
+            <td>Sno</td>
+            <td>Sname</td>
+            <td>Ssex</td>
+       <td>Sage</td>
+       <td>Sdept</td>
+        </tr>
+        <!--js将在此处添加条目-->
+    </table>
+  </div>
   <h1>
     <div>
       <div style="display: inline-block;">
         <form action="http://127.0.0.1:3000/login" method="GET">
           <!--设置元素名字-->
-          帐号: <input type="text" name="account"> 
+          帐号: <input type="text" name="account">
           密码: <input type="text" name="password">
           <input type="submit" value="Submit">
-        <a href="register.html">注册</a>
-        
+          <a href="register.html">注册</a>
+
       </div>
     </div>
-
+    <div>
+      <h3>rank</h3>
+      <div class="rank"></div>
+    </div>
   </h1>
   <header>
     <h1>2048</h1>
     <a href="javascript:newgame()" id="newgamebutton">New Game</a>
     <p>score: <span id="score">0</span></p>
+    <p>highestscore: <span id="score">0</span></p>
   </header>
 
 
@@ -59,5 +79,31 @@
     <div class="grid-cell" id="grid-cell-3-3"></div>
   </div>
 </body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+  methods: {
+    id:[];
+  }
+  const getUser = async () => {
+    const response = await fetch('http://localhost:3000/getUser')
+    const data = await response.json()
+    console.log(data)
+  }
+  getUser();
+  $(function () {
+		$.get('/getUser', function (data) {
+			for (let list of data) {
+                let table = '<tr class="cardLayout"><td>';
+                let s = '</td><td>';
+                for (let ele of list) {
+                    table += (ele + s);
+                }
+                table += '</td></tr>';
+                $("#record2").append(table);
+            }
+        });       
+    });
+</script>
 
 </html>
