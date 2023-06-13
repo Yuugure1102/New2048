@@ -23,45 +23,45 @@
   </h5>
   <table width="100%" id="record">
     <tr class="cardLayout">
-        <td>id</td>
-        <td>account</td>
-        <td>highestscore</td>
+      <td>id</td>
+      <td>account</td>
+      <td>highestscore</td>
     </tr>
     <!--js将在此处添加条目-->
 
-</table>
+  </table>
   <script>
     $(function () {
-		$.get('/getUser', function (data) {
-			for (let list of data) {
-        // console.log(data[2].id)
-        console.log(Object.keys(list).length)
-                let table = '<tr class="cardLayout"><td>';
-                let s = '</td><td>';
-                for (let i=0;i<=(Object.keys(list).length);i++) {
-                  // console.log(ele)
-                  if(i==0){
-                    table += (list.id + s);
-                  }else if(i==1){
-                    table += (list.account + s);
-                  }else if(i==3){
-                    table += (list.highestscore + s);
-                  }
-                }
-                table += '</td></tr>';
-                $("#record").append(table);
+      $.get('/getUser', function (data) {
+        for (let list of data) {
+          // console.log(data[2].id)
+          console.log(Object.keys(list).length)
+          let table = '<tr class="cardLayout"><td>';
+          let s = '</td><td>';
+          for (let i = 0; i <= (Object.keys(list).length); i++) {
+            // console.log(ele)
+            if (i == 0) {
+              table += (list.id + s);
+            } else if (i == 1) {
+              table += (list.account + s);
+            } else if (i == 3) {
+              table += (list.highestscore + s);
             }
-        });       
+          }
+          table += '</td></tr>';
+          $("#record").append(table);
+        }
+      });
     });
   </script>
   <h1>
     <div>
       <div style="display: inline-block;">
-        <form action="http://127.0.0.1:3000/login" method="GET">
+        <form action="http://localhost:3000/login" method="GET">
           <!--设置元素名字-->
           帐号: <input type="text" name="account">
           密码: <input type="text" name="password">
-          <input type="submit" value="Submit">
+          <input type="submit" value="提交">
           <a href="register.html">注册</a>
       </div>
     </div>
@@ -70,7 +70,8 @@
     <h1>2048</h1>
     <a href="javascript:newgame()" id="newgamebutton">New Game</a>
     <p>score: <span id="score">0</span></p>
-    <p>highestscore: <span id="score">0</span></p>
+    <!-- <p>highestscore: <span id="score">0
+      </span></p> -->
   </header>
 
 
