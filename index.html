@@ -15,23 +15,45 @@
   <script src="./support2048.js"></script>
   <script src="./showanimation2018.js"></script>
   <script src="./main2048.js"></script>
-
 </head>
 
 <body>
-  <div>
-    <p style="text-align: center">学生信息表</p>
-    <table width="100%" id="record2">
-        <tr class="cardLayout">
-            <td>Sno</td>
-            <td>Sname</td>
-            <td>Ssex</td>
-       <td>Sage</td>
-       <td>Sdept</td>
-        </tr>
-        <!--js将在此处添加条目-->
-    </table>
-  </div>
+  <h5>
+    rank
+  </h5>
+  <table width="100%" id="record">
+    <tr class="cardLayout">
+        <td>id</td>
+        <td>account</td>
+        <td>highestscore</td>
+    </tr>
+    <!--js将在此处添加条目-->
+
+</table>
+  <script>
+    $(function () {
+		$.get('/getUser', function (data) {
+			for (let list of data) {
+        // console.log(data[2].id)
+        console.log(Object.keys(list).length)
+                let table = '<tr class="cardLayout"><td>';
+                let s = '</td><td>';
+                for (let i=0;i<=(Object.keys(list).length);i++) {
+                  // console.log(ele)
+                  if(i==0){
+                    table += (list.id + s);
+                  }else if(i==1){
+                    table += (list.account + s);
+                  }else if(i==3){
+                    table += (list.highestscore + s);
+                  }
+                }
+                table += '</td></tr>';
+                $("#record").append(table);
+            }
+        });       
+    });
+  </script>
   <h1>
     <div>
       <div style="display: inline-block;">
@@ -41,12 +63,7 @@
           密码: <input type="text" name="password">
           <input type="submit" value="Submit">
           <a href="register.html">注册</a>
-
       </div>
-    </div>
-    <div>
-      <h3>rank</h3>
-      <div class="rank"></div>
     </div>
   </h1>
   <header>
@@ -83,7 +100,7 @@
 
 <script>
   methods: {
-    id:[];
+    id: [];
   }
   const getUser = async () => {
     const response = await fetch('http://localhost:3000/getUser')
@@ -91,19 +108,7 @@
     console.log(data)
   }
   getUser();
-  $(function () {
-		$.get('/getUser', function (data) {
-			for (let list of data) {
-                let table = '<tr class="cardLayout"><td>';
-                let s = '</td><td>';
-                for (let ele of list) {
-                    table += (ele + s);
-                }
-                table += '</td></tr>';
-                $("#record2").append(table);
-            }
-        });       
-    });
+
 </script>
 
 </html>

@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
-
+var http = require('http'); 
 var router = express.Router();
-
+var fs = require('fs');
 const mysql = require("mysql")
 
 const connection = mysql.createConnection({
@@ -20,7 +20,7 @@ app.listen(3000, () => {
 app.use(express.static(__dirname));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.ejs");
+  res.sendFile(__dirname + "/index.html");
 });
 
 app.all("*", function (req, res, next) {
@@ -87,6 +87,7 @@ app.get('/process_get', function (req, res) {
     });
   }else{
     console.log("账号已存在")
+    res.end("fail");
   }
   //创建增加数据的sql语句实现注册功能
 
@@ -95,13 +96,27 @@ app.get('/process_get', function (req, res) {
 // res.render('/index', {json:'json数据'});
 
 app.get('/getUser', (req, res) => {
-  connection.query('select * from user', (err, data, field) => {
+  connection.query('select * from user order by highestscore DESC', (err, data, field) => {
     if (!err) {
       //返回查询数据
       res.send(data)
     }
   })
 })
+
+var sqlWord = 'select * from user';
+connection.query(sqlWord, function (err, result) {
+  if (err) {
+    console.log('[query]-:' + err);
+  } else {
+    router.get('/', function (req, res, next) {
+      res.render('index', {
+        title: 'express测试实例连接数据库',
+        data: result
+      })
+    })
+  }
+});
 
 
 module.exports = router;
