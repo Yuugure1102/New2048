@@ -63,7 +63,7 @@ router.post("/update", function (req, res, next) {
   var id = req.body.id;
   var account = req.body.account;
   var password = req.body.password;
-  var sql = "update user set account = '" + account + "',password = '" + password + "' where id = " + id;
+  var sql = "update user set account = '" + account + "',password = '" + password + "' where id = '" + id ;
   console.log(sql);
   db.query(sql, function (err, rows) {
     if (err) {

@@ -67,3 +67,30 @@ header p {
 
     position: absolute;
 }
+
+
+
+img{
+  width: 4rem;
+  height: 4rem;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.853rem;
+  border-radius: 50%;
+}
+#js_logo_img{
+  width: 4rem;
+  height: 4rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 30%;
+  opacity: 0;
+}
+
+h1{
+  color: #000066;
+  font-size: 0.853rem;
+  text-align: center;
+  margin: 0;
+}

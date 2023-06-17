@@ -1,11 +1,35 @@
 const express = require("express");
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
+window = dom.window;
+document = window.document;
+XMLHttpRequest = window.XMLHttpRequest;
 const app = express();
 var http = require('http'); 
 var router = express.Router();
 var fs = require('fs');
 const mysql = require("mysql")
 var bodyParser=require('body-parser')
+const multer = require('multer');
 app.use(bodyParser.json())
+
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+      cb(null, 'file') // 设置文件保存的文件夹,存储的文件夹必须自己先创建，如果没有的话会报错，只需要文件名，不需要改路径
+  },
+  filename(req, file, cb) {
+      cb(null, randomNumber(1,1000000) + '-' + file.originalname) // 设置保存的文件名
+  }
+});
+
+// 随机数
+const randomNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+
+
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -67,8 +91,7 @@ app.get('/process_get', function (req, res) {
       "password":req.query.password,
   };
   //创建增加数据的sql语句实现注册功能
-  var testsql="select account,password from user where account = '"+req.query.account+"'";
-  if(testsql==null){
+  var testsql="select account from user where account = '"+req.query.account+"'";
     var  addSql = 'INSERT INTO user(account,password) VALUES(?,?)';
     //获取用户输入的数据
     var  addSqlParams = [req.query.account,req.query.password];
@@ -83,10 +106,6 @@ app.get('/process_get', function (req, res) {
          res.end("success");
          console.log("注册成功");
      });
-  }else{
-    res.end("fail");
-    console.log("用户名已存在");
-  }
 
   console.log(response);
 })
@@ -98,5 +117,9 @@ app.get('/getUser', (req, res) => {
     }
   })
 })
+
+
+
+
 
 module.exports = router;
